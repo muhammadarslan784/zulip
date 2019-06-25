@@ -347,6 +347,14 @@ exports.tokenize_compose_str = function (s) {
             } else if (/[\s(){}\[\]]/.test(s[i - 1])) {
                 return s.slice(i);
             }
+            break;
+        case '>':
+            // topic_jump
+            if (s.substring(i - 2, i) === '**' || s.substring(i - 3, i) === '** ') {
+                // return any string as long as its not ''.
+                return '>topic_jump';
+            }
+            break;
         }
     }
 
@@ -516,6 +524,18 @@ exports.compose_content_begins_typeahead = function (query) {
         this.token = current_token;
         return stream_data.get_unsorted_subs();
     }
+
+    if (this.options.completions.topic) {
+        // Stream regex modified from marked.js
+        // Matches '#**stream name** >' at the end of a split.
+        var stream_regex =  /#\*\*([^\*]+)\*\*\s?>$/;
+        var should_jump_inside_typeahead = stream_regex.test(split[0]);
+        if (should_jump_inside_typeahead) {
+            this.completing = 'topic_jump';
+            this.token = '>';
+            return ['']; // return something so that the typeahead is shown.
+        }
+    }
     return false;
 };
 
@@ -531,6 +551,8 @@ exports.content_highlighter = function (item) {
     } else if (this.completing === 'stream') {
         return typeahead_helper.render_stream(item);
     } else if (this.completing === 'syntax') {
+        return typeahead_helper.render_typeahead_item({ primary: item });
+    } else if (this.completing === 'topic_jump') {
         return typeahead_helper.render_typeahead_item({ primary: item });
     }
 };
@@ -593,6 +615,13 @@ exports.content_typeahead_selected = function (item) {
             // "rest" (i.e. do not add a closing fence)
             beginning = beginning.substring(0, backticks) + item;
         }
+    } else if (this.completing === 'topic_jump') {
+        // Put the cursor at the end of the previous stream typeahead's content.
+        var index = beginning.lastIndexOf('**'); // index where the stream completion closes.
+        if (index !== -1) {
+            rest = beginning.substring(index, beginning.length - 1) + rest;
+            beginning = beginning.substring(0, index) + '>';
+        }
     }
 
     // Keep the cursor after the newly inserted text, as Bootstrap will call textbox.change() to
@@ -616,6 +645,8 @@ exports.compose_content_matcher = function (item) {
         return query_matches_user_group_or_stream(this.token, item);
     } else if (this.completing === 'syntax') {
         return query_matches_language(this.token, item);
+    } else if (this.completing === 'topic_jump') {
+        return true;
     }
 };
 
@@ -630,7 +661,17 @@ exports.compose_matches_sorter = function (matches) {
         return typeahead_helper.sort_streams(matches, this.token);
     } else if (this.completing === 'syntax') {
         return typeahead_helper.sort_languages(matches, this.token);
+    } else if (this.completing === 'topic_jump') {
+        return matches;
     }
+};
+
+exports.compose_automated_selection = function () {
+    if (this.completing === 'topic_jump') {
+        // automatically jump inside stream mention on typing >
+        return true;
+    }
+    return false;
 };
 
 exports.initialize_compose_typeahead = function (selector) {
@@ -641,6 +682,7 @@ exports.initialize_compose_typeahead = function (selector) {
         slash: true,
         stream: true,
         syntax: true,
+        topic: true,
     };
 
     $(selector).typeahead({
@@ -654,6 +696,7 @@ exports.initialize_compose_typeahead = function (selector) {
         updater: exports.content_typeahead_selected,
         stopAdvance: true, // Do not advance to the next field on a tab or enter
         completions: completions,
+        automated: exports.compose_automated_selection,
     });
 };
 
