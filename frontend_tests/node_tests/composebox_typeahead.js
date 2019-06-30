@@ -1302,6 +1302,11 @@ run_test('begins_typeahead', () => {
         assert_typeahead_equals("```test", symbol, lang_list);
         assert_typeahead_equals("~~~test", symbol, lang_list);
     });
+
+    var sweden_topics = topic_data.get_recent_names(1); //includes "more ice"
+    assert_typeahead_equals("#**Sweden>more ice", "**", sweden_topics);
+    sweden_topics.push('totally new topic');
+    assert_typeahead_equals("#**Sweden>totally new topic", "**", sweden_topics);
 });
 
 run_test('tokenizing', () => {
