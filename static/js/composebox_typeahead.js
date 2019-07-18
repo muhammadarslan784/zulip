@@ -559,8 +559,9 @@ exports.compose_content_begins_typeahead = function (query) {
             this.token = '>';
             return ['']; // return something so that the typeahead is shown.
         }
+        // Matches '#**stream name>some text' at the end of a split.
         var stream_topic_regex = /#\*\*([^\*>]+)>([^\*]*)$/;
-        var should_begin_typeahead = stream_topic_regex.test(split[0]) && split[1].startsWith('**');
+        var should_begin_typeahead = stream_topic_regex.test(split[0]);
         if (should_begin_typeahead) {
             this.completing = 'topic_list';
             var tokens = stream_topic_regex.exec(split[0]);
@@ -598,7 +599,7 @@ exports.content_highlighter = function (item) {
     }
 };
 
-exports.content_typeahead_selected = function (item) {
+exports.content_typeahead_selected = function (item, event) {
     var pieces = exports.split_at_cursor(this.query, this.$element);
     var beginning = pieces[0];
     var rest = pieces[1];
@@ -639,7 +640,12 @@ exports.content_typeahead_selected = function (item) {
         if (beginning.endsWith('#*')) {
             beginning = beginning.substring(0, beginning.length - 2);
         }
-        beginning += '#**' + item.name + '** ';
+        beginning += '#**' + item.name;
+        if (event && event.key === '>') {
+            beginning += '>';
+        } else {
+            beginning += '** ';
+        }
         $(document).trigger('streamname_completed.zulip', {stream: item});
     } else if (this.completing === 'syntax') {
         // Isolate the end index of the triple backticks/tildes, including
@@ -660,16 +666,11 @@ exports.content_typeahead_selected = function (item) {
         // Put the cursor at the end of the previous stream typeahead's content.
         var index = beginning.lastIndexOf('**'); // index where the stream completion closes.
         if (index !== -1) {
-            rest = beginning.substring(index, beginning.length - 1) + rest;
             beginning = beginning.substring(0, index) + '>';
         }
     } else if (this.completing === 'topic_list') {
-        var index_2 = rest.indexOf('**'); // index where the stream completion closes.
-        if (index_2 !== -1) {
-            var start = beginning.length - this.token.length;
-            beginning = beginning.substring(0, start) + item + rest.substring(0, index_2 + 3);
-            rest = rest.substring(3);
-        }
+        var start = beginning.length - this.token.length;
+        beginning = beginning.substring(0, start) + item + '** ';
     }
 
     // Keep the cursor after the newly inserted text, as Bootstrap will call textbox.change() to
@@ -726,6 +727,14 @@ exports.compose_automated_selection = function () {
     return false;
 };
 
+exports.compose_trigger_selection = function (event) {
+    if (this.completing === 'stream' && event.key === '>') {
+        // complete stream typeahead partially to immediately start the topic_list typeahead.
+        return true;
+    }
+    return false;
+};
+
 exports.initialize_compose_typeahead = function (selector) {
     var completions = {
         mention: true,
@@ -749,6 +758,7 @@ exports.initialize_compose_typeahead = function (selector) {
         stopAdvance: true, // Do not advance to the next field on a tab or enter
         completions: completions,
         automated: exports.compose_automated_selection,
+        trigger_selection: exports.compose_trigger_selection,
     });
 };
 
