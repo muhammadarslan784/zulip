@@ -9,6 +9,7 @@
     font-size: 0.9em;
 
     cursor: text;
+    pointer-events: none !important;
 
     .pill {
         display: inline-flex;
@@ -22,7 +23,7 @@
 
         border-radius: 4px;
         background-color: hsla(0, 0%, 0%, 0.07);
-        cursor: pointer;
+        cursor: none;
 
         &:focus {
             color: hsl(0, 0%, 100%);

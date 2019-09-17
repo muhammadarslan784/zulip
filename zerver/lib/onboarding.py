@@ -44,23 +44,40 @@ def send_initial_pms(user: UserProfile) -> None:
                                    "started with Zulip\n" % (help_url,))
 
     content = (
-        "Hello, and welcome to Zulip!\n\nThis is a private message from me, Welcome Bot. "
+        "Hello, and welcome to Zineya!\n\nThis is a private message from me, Zineya Bot. "
         "Here are some tips to get you started:\n"
-        "* Download our [Desktop and mobile apps](/apps)\n"
         "* Customize your account and notifications on your [Settings page](#settings)\n"
-        "* Type `?` to check out Zulip's keyboard shortcuts\n"
+        "* Type `?` to check out Zineya's keyboard shortcuts\n"
         "%s"
         "\n"
         "The most important shortcut is `r` to reply.\n\n"
         "Practice sending a few messages by replying to this conversation. If you're not into "
         "keyboards, that's okay too; clicking anywhere on this message will also do the trick!") \
         % (organization_setup_text,)
-
-    internal_send_private_message(user.realm, get_system_bot(settings.WELCOME_BOT),
+    print("////////////////////////HEY THERE THIS IS WELCOME BOT FUNCTION UPPPER //////////////////////")
+    print("//////////// ///////////////////////////////////////////////////////////////////////////////")
+    print("//////////// ///////////////////////////////////////////////////////////////////////////////")
+    welcome_bot = get_system_bot(settings.WELCOME_BOT)
+    #welcome_bots = welcome_bot.replace('welcome-bot@zulip.com',  'test-bot@localhost')
+    print(welcome_bot.email)
+    welcome_bot.email = "test-bot@localhost"
+    welcome_bot.full_name = "Zineya"
+    welcome_bot.short_name = "Zineya"
+    welcome_bot.api_key = "cTVr9MrmB5OZQqOlx3vc7B5R6Ac3Hafd"
+    welcome_bot.delivery_email = "test-bot@localhost"
+    welcome_bot.id = 19
+    print(welcome_bot.email)
+    internal_send_private_message(user.realm, welcome_bot,
                                   user, content)
 
 def send_initial_realm_messages(realm: Realm) -> None:
     welcome_bot = get_system_bot(settings.WELCOME_BOT)
+    # welcome_bot.email = "test-bot@localhost"
+    # welcome_bot.full_name = "Zineya"
+    # welcome_bot.short_name = "Zineya"
+    # welcome_bot.api_key = "cTVr9MrmB5OZQqOlx3vc7B5R6Ac3Hafd"
+    #print("////////////////////////HEY THERE THIS IS WELCOME BOT FUNCTION //// //////////////////")
+    #print("///////////////////////////////////////////////////////////////////////////////////////////")
     # Make sure each stream created in the realm creation process has at least one message below
     # Order corresponds to the ordering of the streams on the left sidebar, to make the initial Home
     # view slightly less overwhelming

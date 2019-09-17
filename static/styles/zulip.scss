@@ -1090,6 +1090,8 @@ td.pointer {
     line-height: 12px;
     font-size: 14px;
     margin-left: -3px;
+    cursor: text;
+    pointer-events: none !important;
 }
 
 .sender-status {
@@ -1109,7 +1111,7 @@ td.pointer {
     font-weight: 700;
 }
 
-.sender_name_hovered .sender_name,
+
 .sender_name_hovered .sender_name-in-status {
     color: hsl(200, 100%, 40%);
 }
@@ -1196,7 +1198,7 @@ a.dark_background:hover,
 }
 
 .message_top_line * {
-    pointer-events: auto;
+    pointer-events: none;
 }
 
 .include-sender .message_top_line {
@@ -1673,6 +1675,7 @@ a:hover code {
 
 .messagebox-content {
     padding: 4px 115px 1px 10px;
+    border: 1px solid #dcdcdc;
 }
 
 #message-edit-history .messagebox-content {

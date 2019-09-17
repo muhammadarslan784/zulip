@@ -22,7 +22,7 @@
 
 {% block customhead %}
 <meta name="apple-mobile-web-app-capable" content="yes">
-<link href="/static/images/logo/apple-touch-icon-precomposed.png" rel="apple-touch-icon-precomposed">
+<link href="/static/images/logoz.PNG" rel="apple-touch-icon-precomposed">
 <link id="emoji-spritesheet" href="/static/generated/emoji/{{ emojiset }}-sprite.css" rel="stylesheet" type="text/css">
 <style>
     #css-loading {
@@ -100,7 +100,7 @@
         <div class="alert alert_sidebar alert-error home-error-bar" id="reloading-application"></div>
     </div>
     <div class="app-main">
-        <div class="column-left">
+        <div class="column-left"  style="display: none !important;">
             {% include "zerver/app/left_sidebar.html" %}
         </div>
         <div class="column-middle">
@@ -138,7 +138,7 @@
                 {% endif %}
             </div><!--/tab-content-->
         </div>
-        <div class="column-right">
+        <div class="column-right" style="display: none !important;">
             {% include "zerver/app/right_sidebar.html" %}
         </div><!--/right sidebar-->
     </div><!--/row-->

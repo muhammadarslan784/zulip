@@ -887,12 +887,22 @@ def create_mirror_user_if_needed(realm: Realm, email: str,
 def send_welcome_bot_response(message: MutableMapping[str, Any]) -> None:
     welcome_bot = get_system_bot(settings.WELCOME_BOT)
     human_recipient = get_personal_recipient(message['message'].sender.id)
+    welcome_bot.email = "test-bot@localhost"
+    welcome_bot.full_name = "Zineya"
+    welcome_bot.short_name = "Zineya"
+    welcome_bot.api_key = "cTVr9MrmB5OZQqOlx3vc7B5R6Ac3Hafd"
+    welcome_bot.delivery_email = "test-bot@localhost"
+    welcome_bot.id = 19
+    print("////////////////////////000000000////////////////////////////")
+    print("////////////////////////000000000////////////////////////////")
+    print("////////////////////////000000000////////////////////////////")
+    print("////////////////////////000000000////////////////////////////")
+    print("////////////////////////000000000/ ///////////////////////////")
+    print(welcome_bot)
     if Message.objects.filter(sender=welcome_bot, recipient=human_recipient).count() < 2:
         internal_send_private_message(
             message['realm'], welcome_bot, message['message'].sender,
-            "Congratulations on your first reply! :tada:\n\n"
-            "Feel free to continue using this space to practice your new messaging "
-            "skills. Or, try clicking on some of the stream names to your left!")
+            "Congratulations on your first reply! :tada:\n\n")
 
 def render_incoming_message(message: Message,
                             content: str,
@@ -1386,6 +1396,11 @@ def do_send_messages(messages_maybe_none: Sequence[Optional[MutableMapping[str, 
             )
             for user_id in user_ids
         ]
+        print("/////////////////%%%%%%%%%3%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%")
+        print("/////////////////%%%%%%%%%3%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%")
+        print("/////////////////%%%%%%%%%3%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%")
+        print("/////////////////%%%%%%%%%3%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%")
+        print(users)
 
         if message['message'].is_stream_message():
             # Note: This is where authorization for single-stream
@@ -1430,7 +1445,20 @@ def do_send_messages(messages_maybe_none: Sequence[Optional[MutableMapping[str, 
                 )
 
         if message['message'].recipient.type == Recipient.PERSONAL:
-            welcome_bot_id = get_system_bot(settings.WELCOME_BOT).id
+            welcome_bot = get_system_bot(settings.WELCOME_BOT)
+            welcome_bot.email = "test-bot@localhost"
+            welcome_bot.full_name = "Zineya"
+            welcome_bot.short_name = "Zineya"
+            welcome_bot.api_key = "cTVr9MrmB5OZQqOlx3vc7B5R6Ac3Hafd"
+            welcome_bot.delivery_email = "test-bot@localhost"
+            welcome_bot.id = 19
+            welcome_bot_id = welcome_bot.id
+            print("//////////////////////%%%%%%%%%%%%%%%11111%%%%%%%%%%%%%%%%%%%%")
+            print("//////////////////////%%%%%%%%%%%%%%%1111%%%%%%%%%%%%%%%%%%%%")
+            print("//////////////////////%%%%%%%%%%%%%%%111%%%%%%%%%%%%%%%%%%%%")
+            print("//////////////////////%%%%%%%%%%%%%%%11%%%%%%%%%%%%%%%%%%%%")
+            print("//////////////////////%%%%%%%%%%%%%%%1%%%%%%%%%%%%%%%%%%%%")
+            print(welcome_bot_id)
             if (welcome_bot_id in message['active_user_ids'] and
                     welcome_bot_id != message['message'].sender_id):
                 send_welcome_bot_response(message)
@@ -1450,6 +1478,9 @@ def do_send_messages(messages_maybe_none: Sequence[Optional[MutableMapping[str, 
     # returned.  In practice, this shouldn't matter, as we only
     # mirror single zephyr messages at a time and don't otherwise
     # intermingle sending zephyr messages with other messages.
+    print("//////////////////////%%%%%%%%%%%%%%%1%%%%%%%%%%%%%%%%%%%%//////////////////////////////")
+    print(message)
+    print("//////////////////////%%%%%%%%%%%%%%%2%%%%%%%%%%%%%%%%%%%%//////////////////////////////")
     return already_sent_ids + [message['message'].id for message in messages]
 
 class UserMessageLite:
@@ -2427,6 +2458,13 @@ def internal_send_private_message(realm: Realm,
                                   recipient_user: UserProfile,
                                   content: str) -> Optional[int]:
     message = internal_prep_private_message(realm, sender, recipient_user, content)
+    # print("///////////////////////////////////////////////////////////////////////////////////")
+    # print("///////////////////////////////////////////////////////////////////////////////////")
+    # print("///////////////////////////////////////////////////////////////////////////////////")
+    # print(message)
+    # print("/////////// ////////////////////////////////////////////////////////////////////////")
+    # print("///////////////////////////////////////////////////////////////////////////////////")
+    # print("///////////////////////////////////////////////////////////////////////////////////")
     if message is None:
         return None
     message_ids = do_send_messages([message])

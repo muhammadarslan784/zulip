@@ -1501,6 +1501,7 @@ class AbstractMessage(models.Model):
     subject = models.CharField(max_length=MAX_TOPIC_NAME_LENGTH, db_index=True)  # type: str
 
     content = models.TextField()  # type: str
+    reply_message_id = models.IntegerField(null=True)  # type: Optional[int]
     rendered_content = models.TextField(null=True)  # type: Optional[str]
     rendered_content_version = models.IntegerField(null=True)  # type: Optional[int]
 

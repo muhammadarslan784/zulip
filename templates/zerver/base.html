@@ -7,12 +7,12 @@
         <meta charset="UTF-8">
         {% block title %}
             {% if user_profile and user_profile.realm.name %}
-            <title>{{user_profile.realm.name}} - Zulip</title>
+            <title>{{user_profile.realm.name}} - Zineya</title>
             {% else %}
-            <title>Zulip</title>
+            <title>Zineya</title>
             {% endif %}
         {% endblock %}
-        <link href="/static/favicon.ico?v=2" rel="shortcut icon">
+        <link href="/static/images/favicon.ico" rel="shortcut icon">
         {% block meta_viewport %}
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         {% endblock %}

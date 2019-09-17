@@ -839,7 +839,6 @@ def get_messages_backend(request: HttpRequest, user_profile: UserProfile,
     # This is a hack to tag the query we use for testing
     query = query.prefix_with("/* get_messages */")
     rows = list(sa_conn.execute(query).fetchall())
-
     query_info = post_process_limited_query(
         rows=rows,
         num_before=num_before,
@@ -902,6 +901,31 @@ def get_messages_backend(request: HttpRequest, user_profile: UserProfile,
         client_gravatar=client_gravatar,
         allow_edit_history=user_profile.realm.allow_edit_history,
     )
+
+    print("///////////////////////////////////////////////////////////////////////////")
+    print("///////////////////////////////////////////////////////////////////////////")
+    print("///////////////////////////////%%%%%%%////////////////////////////////////////////")
+    i = 0
+    while i < len(message_list):
+        temail = message_list[i]['sender_email']
+        if temail == 'welcome-bot@zulip.com':
+            message_list[i]['sender_email'] = 'test-bot@localhost'
+            message_list[i]['sender_short_name'] = 'Zineya'
+            message_list[i]['sender_full_name'] = 'Zineya'
+            #tdisplay_recipient = message_list[i]['display_recipient']
+            j = 0
+            while j < len(message_list[i]['display_recipient']):
+                dremail = message_list[i]['display_recipient'][j]['email']
+                if dremail == 'welcome-bot@zulip.com':
+                    message_list[i]['display_recipient'][j]['email'] = 'test-bot@localhost'
+                    message_list[i]['display_recipient'][j]['short_name'] = 'Zineya'
+                    message_list[i]['display_recipient'][j]['full_name'] = 'Zineya'
+                j = j+1
+        i = i+1
+    print(message_list)
+    print("///////////////////////////////%%%%%%%////////////////////////////////////////////")
+    print("///////////////////////////////////////////////////////////////////////////")
+    print("///////////////////////////////////////////////////////////////////////////")
 
     statsd.incr('loaded_old_messages', len(message_list))
 
@@ -1258,6 +1282,7 @@ def send_message_backend(request: HttpRequest, user_profile: UserProfile,
                                           documentation_pending=True),
                          topic_name: Optional[str]=REQ_topic(),
                          message_content: str=REQ('content'),
+			 #reply_message_id: int=REQ('reply_message_id'),
                          widget_content: Optional[str]=REQ(default=None,
                                                            documentation_pending=True),
                          realm_str: Optional[str]=REQ('realm_str', default=None,

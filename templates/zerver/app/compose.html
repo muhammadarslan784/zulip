@@ -8,7 +8,7 @@
                 <span id="compose-reply-error-msg"></span>
             </div>
             <div id="compose_buttons">
-                <span class="new_message_button">
+                <span class="new_message_button" style="display: none !important;">
                     <a class="drafts-link no-underline button small rounded compose_drafts_button" href="#drafts" title="{{ _('Drafts') }} (d)">
                         {{ _('Drafts') }}
                     </a>
@@ -21,7 +21,7 @@
                         <span>+</span>
                     </button>
                 </span>
-                <span class="new_message_button">
+                <span class="new_message_button"  style="display: none !important;">
                     <button type="button" class="button small rounded compose_stream_button"
                       id="left_bar_compose_stream_button_big"
                       title="{{ _('New topic') }} (c)">
@@ -29,19 +29,19 @@
                     </button>
                 </span>
                 {% if not embedded %}
-                <span class="new_message_button">
+                <span class="new_message_button"  style="display: none !important;">
                     <button type="button" class="button small rounded compose_private_button"
                       id="left_bar_compose_private_button_big"
                       title="{{ _('New private message') }} (x)">
-                        <span class="compose_private_button_label">{{ _('New private message') }}</span>
+                        <span class="compose_private_button_label">{{ _('New message') }}</span>
                     </button>
                 </span>
                 {% endif %}
-                <span class="new_message_button">
+                <span class="new_message_button"  > <!-- Note: For Reply option-->
                     <button type="button" class="button small rounded compose_reply_button"
                       id="left_bar_compose_reply_button_big"
                       title="{{ _('Reply') }} (r)">
-                        <span class="compose_reply_button_label">{{ _('Reply') }}</span>
+                        <span class="compose_reply_button_label">{{ _('New message') }}</span>
                     </button>
                 </span>
             </div>
@@ -80,7 +80,7 @@
                             <div class="right_part">
                                 <div class="pm_recipient">
                                     <div class="pill-container" data-before="{{ _('You and') }}">
-                                        <div class="input" contenteditable="true" id="private_message_recipient" data-no-recipients-text="{{ _('Add one or more users') }}" data-some-recipients-text="{{ _('Add another user...') }}"></div>
+                                        <div class="input" contenteditable="true" id="private_message_recipient" data-no-recipients-text="{{ _('zineya') }}" data-some-recipients-text="{{ _('') }}"></div>
                                     </div>
                                 </div>
                             </div>

@@ -1,11 +1,15 @@
 {{#each options}}
 <li>
-    <button class="poll-vote {{#if current_user_vote}}current-user-vote{{/if}}" data-key="{{ key }}">
+   
+   <button class="poll-vote {{#if current_user_vote}}current-user-vote{{/if}}" data-key="{{ key }}">
         {{ count }}
     </button>
     <span class="poll-option">{{ option }}</span>
     {{#if names}}
-    <span class="poll-names">({{ names }})</span>
+    <span class="poll-names" style="display:none !important;">({{ names }})</span>
     {{/if}}
+    <span><i class="fa fa-flag flag-style" aria-hidden="true"></i></span>
+ 
+    
 </li>
 {{/each}}

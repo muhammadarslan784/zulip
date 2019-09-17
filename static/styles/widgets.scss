@@ -27,7 +27,10 @@
     list-style: none;
     margin: 2px 2px 2px 0px;
 }
-
+.poll-widget li {
+    padding-top: 0px;
+    padding-bottom: 20px;
+}
 .todo-widget ul,
 .poll-widget ul {
     margin: 0px 0px 5px 0px;
@@ -40,14 +43,18 @@
 }
 
 .poll-widget .poll-option {
-    font-weight: 600;
+    
 }
-
+.poll-option {
+    white-space: normal;
+}
 .poll-vote {
-    color: hsl(156, 41%, 40%);
-    border-color: hsl(156, 28%, 70%);
+    color: #dcdcdc;
+    border-color: #1F1F1F;
     margin-right: 4px;
-    background-color: hsl(0, 0%, 100%);
+    margin-left:0px;
+    border-radius: 50%;
+    background-color: #dcdcdc;
 }
 
 button.task {
@@ -73,7 +80,9 @@ img.task-completed {
 }
 
 .poll-vote:hover {
-    border-color: hsl(156, 30%, 50%);
+    border-color: #1F1F1F;
+    background-color: #6FFBE8;
+    color: #6FFBE8;
 }
 
 input.add-task,
@@ -135,5 +144,11 @@ button.poll-question:hover {
 }
 
 .current-user-vote {
-    background-color: hsla(156, 10%, 90%, .9);
+    background-color: #00bdaa;
+    color: #00bdaa;
+    border-color: #1F1F1F;
+}
+.flag-style{
+    float: right;
+    margin-left: 6px;
 }
